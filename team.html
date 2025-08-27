@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Équipe - Metashift</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #0f172a;
+            --accent-blue: #3b82f6;
+            --light-blue: #60a5fa;
+            --gradient-start: #1e40af;
+            --gradient-end: #3b82f6;
+            --text-light: #f8fafc;
+            --text-gray: #64748b;
+            --card-bg: rgba(30, 41, 59, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-blue), var(--light-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a.active {
+            color: var(--accent-blue);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--light-blue));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .page-hero {
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="%23334155" stroke-width="0.5" opacity="0.3"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            opacity: 0.2;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .page-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-light), var(--light-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-hero p {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 80px 0;
+        }
+
+        .team-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+
+        .team-member {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 3rem;
+            align-items: start;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-member:nth-child(even) {
+            grid-template-columns: 1fr 300px;
+        }
+
+        .team-member:nth-child(even) .member-photo {
+            order: 2;
+        }
+
+        .team-member:nth-child(even) .member-info {
+            order: 1;
+        }
+
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--light-blue));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .team-member:hover::before {
+            transform: scaleX(1);
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .member-photo {
+            position: relative;
+        }
+
+        .member-avatar {
+            width: 250px;
+            height: 300px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--light-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .member-avatar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .team-member:hover .member-avatar::after {
+            transform: translateX(100%);
+        }
+
+        .member-info h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .member-role {
+            font-size: 1.3rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .member-location {
+            font-size: 1rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .member-description {
+            color: var(--text-gray);
+            line-height: 1.7;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .member-description p {
+            margin-bottom: 1rem;
+        }
+
+        .member-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .skill-tag {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--light-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            font-weight: 500;
+        }
+
+        .member-contact {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .contact-btn:hover::before {
+            left: 100%;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Stats Section */
+        .team-stats {
+            background: rgba(30, 41, 59, 0.3);
+            padding: 60px 0;
+            margin-top: 80px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-blue), var(--light-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-gray);
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-blue);
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 80px;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .team-member {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .team-member:nth-child(even) {
+                grid-template-columns: 1fr;
+            }
+
+            .team-member:nth-child(even) .member-photo {
+                order: 1;
+            }
+
+            .team-member:nth-child(even) .member-info {
+                order: 2;
+            }
+
+            .member-avatar {
+                width: 200px;
+                height: 250px;
+                font-size: 4rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .page-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .member-info h2 {
+                font-size: 1.8rem;
+            }
+
+            .member-role {
+                font-size: 1.1rem;
+            }
+
+            .team-member {
+                padding: 2rem;
+            }
+
+            .member-avatar {
+                width: 180px;
+                height: 220px;
+                font-size: 3.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .member-contact {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="nav-content">
+                <a href="index.html" class="logo">Metashift</a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="index.html#services">Équipements</a></li>
+                    <li><a href="index.html#apropos">À Propos</a></li>
+                    <li><a href="team.html" class="active">Équipe</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1>Notre Équipe</h1>
+            <p>Rencontrez les experts qui dirigent Metashift et vous accompagnent dans vos projets d'équipement informatique.</p>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <div class="team-grid">
+                <!-- Omar Bouargan -->
+                <div class="team-member fade-in">
+                    <div class="member-photo">
+                        <div class="member-avatar">👨‍💼</div>
+                    </div>
+                    <div class="member-info">
+                        <h2>Omar Bouargan</h2>
+                        <p class="member-role">Directeur Commercial</p>
+                        <div class="member-description">
+                            <p>Omar dirige l'ensemble des activités commerciales de Metashift avec plus de 10 ans d'expérience dans la vente d'équipements informatiques professionnels. Sa connaissance approfondie du marché et ses relations privilégiées avec les fournisseurs permettent à nos clients de bénéficier des meilleures solutions au meilleur prix.</p>
+                            <p>Expert en négociation et développement commercial, Omar se concentre sur la compréhension des besoins spécifiques de chaque client pour proposer des solutions d'équipement parfaitement adaptées. Son approche consultative et son engagement envers l'excellence du service client font de lui un partenaire de confiance pour toutes vos acquisitions informatiques.</p>
+                        </div>
+                        <div class="member-skills">
+                            <span class="skill-tag">Vente B2B</span>
+                            <span class="skill-tag">Négociation</span>
+                            <span class="skill-tag">Relations Clients</span>
+                            <span class="skill-tag">Développement Commercial</span>
+                            <span class="skill-tag">Conseil Stratégique</span>
+                        </div>
+                        <div class="member-contact">
+                            <a href="mailto:omar@metashift.com" class="contact-btn">
+                                📧 Contacter Omar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Zakariae Bouargan -->
+                <div class="team-member fade-in">
+                    <div class="member-photo">
+                        <div class="member-avatar">👨‍💻</div>
+                    </div>
+                    <div class="member-info">
+                        <h2>Zakariae Bouargan</h2>
+                        <p class="member-role">Directeur Technique & IT</p>
+                        <div class="member-description">
+                            <p>Zakariae supervise tous les aspects techniques et informatiques de Metashift. Avec une expertise approfondie en infrastructure IT et une connaissance pointue des dernières technologies, il garantit que nous proposons toujours les équipements les plus performants et adaptés aux besoins de nos clients.</p>
+                            <p>Responsable de l'évaluation technique des produits, de la veille technologique et du support pré-vente, Zakariae s'assure que chaque recommandation d'équipement est techniquement solide et alignée avec les objectifs business de nos clients. Son expertise couvre l'ensemble des domaines IT : serveurs, réseaux, stockage, sécurité et périphériques.</p>
+                        </div>
+                        <div class="member-skills">
+                            <span class="skill-tag">Infrastructure IT</span>
+                            <span class="skill-tag">Évaluation Technique</span>
+                            <span class="skill-tag">Veille Technologique</span>
+                            <span class="skill-tag">Architecture Système</span>
+                            <span class="skill-tag">Conseil Technique</span>
+                        </div>
+                        <div class="member-contact">
+                            <a href="mailto:zakariae@metashift.com" class="contact-btn">
+                                📧 Contacter Zakariae
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Metashift. Tous droits réservés. Votre revendeur de confiance pour les équipements informatiques.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add floating particles effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const hero = document.querySelector('.page-hero');
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: absolute;
+                    width: 2px;
+                    height: 2px;
+                    background: var(--accent-blue);
+                    border-radius: 50%;
+                    opacity: 0.3;
+                    animation: float ${3 + Math.random() * 4}s ease-in-out infinite;
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                    animation-delay: ${Math.random() * 2}s;
+                `;
+                hero.appendChild(particle);
+            }
+        });
+    </script>
+</body>
+</html>
